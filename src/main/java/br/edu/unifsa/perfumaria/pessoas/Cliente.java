@@ -8,5 +8,5 @@ public class Cliente extends Pessoa{
     public Cliente(String cpf, String nome, String email, String telefone) {
         super(cpf, nome, email, telefone);
     }
-    
+
 }
