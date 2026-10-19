@@ -3,7 +3,7 @@ package br.edu.unifsa.perfumaria.pessoas;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Vendedor extends Funcionario{
+public class Vendedor extends Funcionario {
 
     private int numeroVendas;
 

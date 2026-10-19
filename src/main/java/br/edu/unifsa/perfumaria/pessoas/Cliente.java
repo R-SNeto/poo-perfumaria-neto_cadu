@@ -1,6 +1,6 @@
 package br.edu.unifsa.perfumaria.pessoas;
 
-public class Cliente extends Pessoa{
+public class Cliente extends Pessoa {
 
     public Cliente() {
     }

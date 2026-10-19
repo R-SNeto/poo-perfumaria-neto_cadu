@@ -3,7 +3,7 @@ package br.edu.unifsa.perfumaria.pessoas;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public abstract class Funcionario extends Pessoa{
+public abstract class Funcionario extends Pessoa {
 
     private LocalDate dataContrato;
     private BigDecimal salario;
