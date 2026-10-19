@@ -1,8 +1,7 @@
 package br.edu.unifsa.perfumaria.pessoas;
 
-public enum CategoriaFuncionario {
+public enum NivelPerfumista {
 
-    VENDEDOR,
     PERFUMISTA_JUNIOR,
     PERFUMISTA_SENIOR;
 

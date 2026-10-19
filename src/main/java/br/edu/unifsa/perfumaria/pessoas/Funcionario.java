@@ -3,17 +3,19 @@ package br.edu.unifsa.perfumaria.pessoas;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Funcionario extends Pessoa{
+public abstract class Funcionario extends Pessoa{
 
     private LocalDate dataContrato;
     private BigDecimal salario;
 
-    private CategoriaFuncionario categoriaFuncionario;
+    private NivelPerfumista nivelPerfumista;
 
     public Funcionario() {
     }
 
-    public Funcionario(String cpf, String nome, String email, String telefone, LocalDate dataContrato, BigDecimal salario) {
+    public Funcionario(String cpf, String nome, String email,
+                       String telefone, LocalDate dataContrato,
+                       BigDecimal salario) {
         super(cpf, nome, email, telefone);
         this.dataContrato = dataContrato;
         this.salario = salario;
@@ -34,4 +36,6 @@ public class Funcionario extends Pessoa{
     public void setSalario(BigDecimal salario) {
         this.salario = salario;
     }
+
+
 }
