@@ -1,5 +1,5 @@
 package br.edu.unifsa.perfumaria.produtos;
 
-public class Formula {
+public class Formula extends Perfume {
 
 }
