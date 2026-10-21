@@ -15,7 +15,7 @@ public class EncomendaPersonalizada {
     public EncomendaPersonalizada(String gravacao) {
         this.id = gerarId();
         this.dataEncomenda = LocalDate.now();
-        this.gravacao = gravacao;
+        validarGravacao(gravacao);
     }
 
     public String getId() {
@@ -32,6 +32,11 @@ public class EncomendaPersonalizada {
 
     public void setGravacao(String gravacao) {
         this.gravacao = gravacao;
+    }
+
+    private void validarGravacao(String gravacao) {
+        if (gravacao.length() > 20) throw new IllegalArgumentException("O tamanho deve ser de, no máximo, 20 caracteres");
+        else this.gravacao = gravacao;
     }
 
     private String gerarId() {

@@ -21,7 +21,7 @@ public abstract class Perfume {
         this.id = gerarId();
         this.name = name;
         this.custoProducao = custoProducao;
-        this.concentracaoEssencia = concentracaoEssencia;
+        setConcentracaoEssencia(concentracaoEssencia);
         this.categoriaPerfume = categoriaPerfume;
         this.formula = formula;
 
@@ -65,7 +65,9 @@ public abstract class Perfume {
     }
 
     public void setConcentracaoEssencia(double concentracaoEssencia) {
-        this.concentracaoEssencia = concentracaoEssencia;
+        if (validarConcentracao(categoriaPerfume, concentracaoEssencia)) {
+            this.concentracaoEssencia = concentracaoEssencia;
+        }
     }
 
     public CategoriaPerfume getCategoriaPerfume() {
@@ -86,6 +88,15 @@ public abstract class Perfume {
 
     public double calcularPrecoVenda() {
         return custoProducao * 1.4;
+    }
+
+    private boolean validarConcentracao(CategoriaPerfume categoriaPerfume, double essencia) {
+        if (essencia >= categoriaPerfume.getConcentracaoMin(categoriaPerfume)
+                && essencia <= categoriaPerfume.getConcentracaoMax(categoriaPerfume)) {
+            return true;
+        }
+
+        return false;
     }
 
     private String gerarId() {
