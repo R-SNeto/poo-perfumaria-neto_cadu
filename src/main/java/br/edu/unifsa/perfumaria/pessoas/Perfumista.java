@@ -19,7 +19,7 @@ public class Perfumista extends Funcionario {
         super(cpf, nome, email, telefone, dataContrato, salario);
         this.nivelPerfumista = nivelPerfumista;
     }
-    
+
     public boolean assinar(Perfume perfume) {
         if (perfume.getCategoriaPerfume() == CategoriaPerfume.PARFUM) {
             if (nivelPerfumista == NivelPerfumista.PERFUMISTA_SENIOR) {
