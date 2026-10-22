@@ -4,8 +4,10 @@ import br.edu.unifsa.perfumaria.produtos.Perfume;
 
 import java.time.LocalDate;
 
-// perfume de um lote já envasado
-public class Frasco implements Rastreavel {
+// perfume de um lote já envasado; implementa duas interfaces
+public class Frasco implements Rastreavel, Perecivel {
+
+    private static final int ANOS_DE_VALIDADE = 3;
 
     private final Lote lote;
     private final int volumeMl;
@@ -38,6 +40,12 @@ public class Frasco implements Rastreavel {
     @Override
     public String getCodigo() {
         return lote.getCodigo();
+    }
+
+    // perfume envasado vale 3 anos
+    @Override
+    public LocalDate getValidade() {
+        return dataEnvase.plusYears(ANOS_DE_VALIDADE);
     }
 
     public Perfume getPerfume() {
