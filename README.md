@@ -8,6 +8,7 @@ Sistema da perfumaria artesanal Essência do Poti (Teresina), feito para a disci
 |---|---|---|
 | Neto | [R-SNeto](https://github.com/R-SNeto) | `produtos` e `pessoas` |
 | Cadu Portela | [carlosportela-bp](https://github.com/carlosportela-bp) | `producao` |
+| Carlos Araújo | [carlosaraujo](https://github.com/carjkls) | `simulacao` |
 
 ## Como executar
 
