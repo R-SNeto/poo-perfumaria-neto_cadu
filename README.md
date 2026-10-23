@@ -73,3 +73,7 @@ src/main/java/br/edu/unifsa/perfumaria/
 | RN09 júnior não assina Parfum | `Perfumista.assinar()` |
 | RN10 vela e difusor | `VelaAromatica` e `Difusor` |
 | RN11 gravação de até 20 caracteres | `EncomendaPersonalizada` |
+
+## Digrama de Classes
+
+![UMLPerfumaria](docs/UMLPerfumaria.png)

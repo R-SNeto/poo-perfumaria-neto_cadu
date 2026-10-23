@@ -27,7 +27,7 @@ public class Simulacao {
     private static final LocalDate HOJE = LocalDate.of(2026, 10, 23);
 
     static void main() {
-        System.out.println("===== UM DIA NA ESSÊNCIA DO POTI - " + HOJE + " =====");
+        System.out.println("====== UM DIA NA ESSÊNCIA DO POTI - " + HOJE + " ======");
 
         simularProducao();
         simularProdutosEPessoas();
