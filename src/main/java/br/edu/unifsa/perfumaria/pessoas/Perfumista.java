@@ -1,5 +1,6 @@
 package br.edu.unifsa.perfumaria.pessoas;
 
+import br.edu.unifsa.perfumaria.produtos.CategoriaPerfume;
 import br.edu.unifsa.perfumaria.produtos.Perfume;
 
 import java.math.BigDecimal;
@@ -19,9 +20,8 @@ public class Perfumista extends Funcionario {
         this.nivelPerfumista = nivelPerfumista;
     }
 
-    //TODO Arrumar a categoria de perfumes
     public boolean assinar(Perfume perfume) {
-        if (perfume.getCategoria == Categoria.PARFUM) {
+        if (perfume.getCategoriaPerfume() == CategoriaPerfume.PARFUM) {
             if (nivelPerfumista == NivelPerfumista.PERFUMISTA_SENIOR) {
                 return true;
             } else {
