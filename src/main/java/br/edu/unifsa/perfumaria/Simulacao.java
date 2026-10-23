@@ -1,132 +1,66 @@
-package br.edu.unifsa.perfumaria;
+# Relatório da classe `Simulacao`
 
-import br.edu.unifsa.perfumaria.producao.Estoque;
-import br.edu.unifsa.perfumaria.producao.Frasco;
-import br.edu.unifsa.perfumaria.producao.Lote;
-import br.edu.unifsa.perfumaria.producao.MateriaPrima;
-import br.edu.unifsa.perfumaria.producao.Venda;
-import br.edu.unifsa.perfumaria.produtos.CategoriaPerfume;
-import br.edu.unifsa.perfumaria.produtos.Perfume;
+Data da análise: 23/10/2026. Escopo entregue: `Simulacao.java`, este relatório e uma correção mínima em `produtos/Perfume.java` autorizada pelo responsável pelo trabalho. O ZIP fornecido é uma exportação sem diretório `.git`; nenhum commit, branch remoto, push ou alteração no GitHub foi feito.
 
-import java.time.LocalDate;
-import java.util.List;
+## O que analisei
 
-public class Simulacao {
+- Enunciado: a simulação deve cadastrar funcionários, matérias-primas e uma fórmula de cada categoria; produzir lotes, envasar, vender, atender encomenda personalizada, tentar violar RN01 a RN11 e exibir o estoque final.
+- API existente nos pacotes `produtos`, `producao` e `pessoas` e os construtores disponíveis para montar o roteiro.
+- Compilação de todos os arquivos Java com JDK 25. A versão original compila, mas não conclui o cadastro de produtos em tempo de execução.
 
-    private static final LocalDate HOJE = LocalDate.of(2026, 10, 23);
+## O que adicionei
 
-    public static void main(String[] args) {
-        System.out.println("===== UM DIA NA ESSÊNCIA DO POTI - " + HOJE + " =====");
+- Roteiro com data fixa para reproduzir os resultados de validade e maceração.
+- Cadastro de perfumistas júnior e sênior, vendedor, cliente, matérias-primas e tentativa de criar fórmulas das quatro categorias.
+- Produção de lote, envase, entrada no estoque, venda comum e atendimento de pedido personalizado quando os objetos necessários existem.
+- Tentativas identificadas no console para RN01 a RN11, inclusive soma incorreta e camada zerada da RN02, as duas partes da RN10 e os caminhos de construtor e setter da RN11.
+- Resultado `RECUSADO`, `FALHOU` ou `NÃO EXECUTADA` conforme o que realmente aconteceu. Uma falha de infraestrutura ou um pré-requisito ausente não é contabilizado como regra aprovada.
+- Impressão do estoque e contadores finais. A classe interna `PerfumeExemplo` serve apenas à demonstração porque `Perfume` é abstrata e o pacote `produtos` não tem um perfume concreto para venda.
+- No construtor de `Perfume`, atribuição de `categoriaPerfume` antes de validar `concentracaoEssencia`. A alteração troca apenas a ordem dessas duas instruções para liberar o cadastro.
 
-        simularProducao();
+## Testes e resultados
 
-        // testes dos módulos produtos e pessoas entram aqui
-    }
+O código original do ZIP compila, mas o construtor de `Perfume` chamava `setConcentracaoEssencia` antes de atribuir `categoriaPerfume`, causando `NullPointerException`. Antes da correção, isso impedia as quatro fórmulas, os lotes e as vendas; o estoque terminava vazio.
 
-    // ---------------- módulo producao ----------------
+Após a correção mínima autorizada e incluída nesta entrega, a simulação compila e executa até o fim. Exibe as quatro fórmulas, quatro lotes, envases, duas vendas e o estoque final. Os resultados das regras foram:
 
-    private static void simularProducao() {
-        titulo("Matérias-primas");
-        MateriaPrima bergamota = new MateriaPrima("Óleo de bergamota", HOJE.minusDays(120));
-        MateriaPrima rosa = new MateriaPrima("Absoluto de rosa", HOJE.minusDays(100));
-        MateriaPrima baunilha = new MateriaPrima("Extrato de baunilha", HOJE.minusDays(90), 720);
-        MateriaPrima alcool = new MateriaPrima("Álcool de cereais", HOJE.minusDays(60));
-        MateriaPrima jasmimVencido = new MateriaPrima("Óleo de jasmim (lote antigo)", LocalDate.of(2025, 1, 10), 180);
-        List<MateriaPrima> insumos = List.of(bergamota, rosa, baunilha, alcool);
-        System.out.println(bergamota);
-        System.out.println(rosa);
-        System.out.println(baunilha);
-        System.out.println(alcool);
-        System.out.println(jasmimVencido + " -> vencida? " + jasmimVencido.estaVencida(HOJE));
+| Regra | Resultado após a correção mínima | Motivo observado |
+| --- | --- | --- |
+| RN01 | Recusada | `Perfume` lança erro para concentração fora da faixa da categoria. |
+| RN02 | Recusada | `Formula` rejeita soma diferente de 100% e camada com 0%. |
+| RN03 | Recusada | `Frasco` rejeita 75 ml. |
+| RN04 | Recusada | `Frasco` rejeita EDP com 20 dias de maceração. |
+| RN05 | Recusada | `Lote` rejeita código vazio. |
+| RN06 | Recusada | `setPrecoVenda` rejeita valor abaixo de custo + 40%. |
+| RN07 | Recusada | `Venda` rejeita quantidade superior ao estoque, que permanece igual. |
+| RN08 | Recusada | `Lote` rejeita matéria-prima vencida. |
+| RN09 | Recusada | Perfumista júnior não assina Parfum; sênior assina. |
+| RN10 | Recusada | Vela rejeita fragrância acima de 10% da cera; difusor rejeita 3 varetas. |
+| RN11 | Parcial | Construtor e setter rejeitam gravação com 21 caracteres. Não há operação de devolução para testar. |
 
-        titulo("Perfumes (um de cada categoria)");
-        Perfume noite = criarPerfume("Noite no Poti", CategoriaPerfume.PARFUM, 189.90);
-        Perfume encontro = criarPerfume("Encontro das Águas", CategoriaPerfume.EAUDEPARFUM, 159.90);
-        Perfume brisa = criarPerfume("Brisa do Parnaíba", CategoriaPerfume.EAUDETOILETTE, 99.90);
-        Perfume cajuina = criarPerfume("Cajuína", CategoriaPerfume.COLONIA, 59.90);
-        for (Perfume p : List.of(noite, encontro, brisa, cajuina)) {
-            System.out.println(p.getName() + " - " + p.getCategoriaPerfume());
-        }
+Após as validações adicionadas nas classes de domínio (ver abaixo), a saída totalizou 14 tentativas recusadas, 0 falhas e 1 não executada (devolução da RN11). Esses números contam tentativas; RN02, RN10 e RN11 têm mais de uma tentativa. Antes dessas validações, eram 7 recusadas, 7 falhas e 1 não executada.
 
-        titulo("Produção de lotes");
-        Lote loteNoite = new Lote(noite, insumos, HOJE.minusDays(65));
-        Lote loteEncontro = new Lote(encontro, insumos, HOJE.minusDays(50));
-        Lote loteBrisa = new Lote(brisa, insumos, HOJE.minusDays(35));
-        Lote loteCajuina = new Lote(cajuina, insumos, HOJE.minusDays(20));
-        Lote loteEncontroNovo = new Lote(encontro, insumos, HOJE.minusDays(20));
-        for (Lote lote : List.of(loteNoite, loteEncontro, loteBrisa, loteCajuina, loteEncontroNovo)) {
-            System.out.println(lote);
-        }
+## Alterações feitas nas classes de domínio
 
-        titulo("Envase");
-        Estoque estoque = new Estoque();
-        Frasco frNoite = new Frasco(loteNoite, 50, HOJE);
-        Frasco frEncontro = new Frasco(loteEncontro, 100, HOJE);
-        Frasco frBrisa = new Frasco(loteBrisa, 100, HOJE);
-        Frasco frCajuina = new Frasco(loteCajuina, 30, HOJE);
-        estoque.adicionar(frNoite, 10);
-        estoque.adicionar(frEncontro, 8);
-        estoque.adicionar(frBrisa, 12);
-        estoque.adicionar(frCajuina, 20);
-        System.out.println(estoque);
+1. `produtos/Perfume.java`: ordem de inicialização corrigida; concentração fora da faixa lança erro (RN01); `setPrecoVenda` recusa preço abaixo de custo + 40% (RN06).
+2. `produtos/Formula.java`: construtor rejeita soma diferente de 100% e camada com 0% (RN02); `validarSoma` compara com tolerância em vez de `==`.
+3. `produtos/VelaAromatica.java` e `produtos/Difusor.java`: validam no construtor e no setter e lançam erro (RN10).
+4. `pessoas/EncomendaPersonalizada.java`: o setter valida a gravação (RN11).
 
-        titulo("Vendas");
-        Venda venda1 = new Venda(estoque, frNoite, 2, HOJE);
-        Venda venda2 = new Venda(estoque, frCajuina, 5, HOJE);
-        Venda venda3 = new Venda(estoque, frBrisa, 1, HOJE.minusDays(3));
-        System.out.println(venda1);
-        System.out.println(venda2);
-        System.out.println(venda3);
-        venda3.devolver(HOJE);
-        System.out.println("Devolução dentro do prazo aceita: " + venda3);
+## Pendências
 
-        titulo("Testes das regras do módulo producao");
-        testar("RN03", "Envasar 'Brisa do Parnaíba' em frasco de 75ml",
-                () -> new Frasco(loteBrisa, 75, HOJE));
-        testar("RN04", "Envasar EDP com 20 dias de maceração",
-                () -> new Frasco(loteEncontroNovo, 50, HOJE));
-        testar("RN05", "Criar lote sem código",
-                () -> new Lote("", noite, insumos, HOJE));
-        System.out.println("       (Lote não tem setCodigo: o código " + loteNoite.getCodigo() + " nunca muda)");
-        testar("RN07", "Vender 50 frascos de 'Noite no Poti' (há " + estoque.getQuantidade(frNoite) + ")",
-                () -> new Venda(estoque, frNoite, 50, HOJE));
-        testar("RN08", "Produzir lote com óleo de jasmim vencido",
-                () -> new Lote(noite, List.of(jasmimVencido, alcool), HOJE));
-        testar("Extra", "Devolver venda pela segunda vez",
-                () -> venda3.devolver(HOJE));
-        testar("Extra", "Devolver venda depois de 7 dias",
-                () -> venda1.devolver(HOJE.plusDays(10)));
-        testar("Extra", "Vender frasco vencido (daqui a 4 anos)",
-                () -> new Venda(estoque, frEncontro, 1, HOJE.plusYears(4)));
+- Definir como a devolução será recusada (RN11): não há operação de devolução na API. A encomenda também não referencia cliente, frasco nem venda; o roteiro combina esses objetos sem vínculo de domínio.
+- Se surgir uma classe concreta para o perfume vendido, substituir `PerfumeExemplo` em `Simulacao` por ela.
 
-        titulo("Estoque final");
-        System.out.println(estoque);
-    }
+## Como executar
 
-    // Perfume é abstrato: aqui criamos um perfume simples só para alimentar a produção
-    private static Perfume criarPerfume(String nome, CategoriaPerfume categoria, double precoVenda) {
-        Perfume perfume = new Perfume() { };
-        perfume.setName(nome);
-        perfume.setCategoriaPerfume(categoria);
-        perfume.setPrecoVenda(precoVenda);
-        return perfume;
-    }
+Na raiz do projeto, com JDK 25 e PowerShell:
 
-    // ---------------- auxiliares ----------------
+```powershell
+$fontes = rg --files src/main/java -g '*.java'
+New-Item -ItemType Directory -Force target/classes | Out-Null
+javac -encoding UTF-8 -d target/classes $fontes
+java -cp target/classes br.edu.unifsa.perfumaria.Simulacao
+```
 
-    // roda a tentativa; se o sistema barrar, mostra RECUSADO e o motivo
-    private static void testar(String regra, String descricao, Runnable tentativa) {
-        try {
-            tentativa.run();
-            System.out.println("[" + regra + "] " + descricao + ": ACEITO (a regra falhou!)");
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println("[" + regra + "] " + descricao + ": RECUSADO");
-            System.out.println("       Motivo: " + e.getMessage());
-        }
-    }
-
-    private static void titulo(String texto) {
-        System.out.println();
-        System.out.println("--- " + texto + " ---");
-    }
-}
+O `README.md` coletivo, o diagrama UML e as outras classes dos pacotes dos demais integrantes não foram alterados.

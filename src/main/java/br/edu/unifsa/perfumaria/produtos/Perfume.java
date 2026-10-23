@@ -21,8 +21,8 @@ public abstract class Perfume {
         this.id = gerarId();
         this.name = name;
         this.custoProducao = custoProducao;
-        setConcentracaoEssencia(concentracaoEssencia);
         this.categoriaPerfume = categoriaPerfume;
+        setConcentracaoEssencia(concentracaoEssencia);
         this.formula = formula;
 
         this.precoVenda = calcularPrecoVenda();
