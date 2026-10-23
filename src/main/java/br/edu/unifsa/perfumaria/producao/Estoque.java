@@ -32,12 +32,36 @@ public class Estoque {
         return itens.getOrDefault(frasco, 0);
     }
 
+    // soma de todos os frascos guardados
+    public int getTotalFrascos() {
+        int total = 0;
+        for (int quantidade : itens.values()) {
+            total += quantidade;
+        }
+        return total;
+    }
+
+    // quanto o estoque vale pelo preço de venda
+    public double getValorTotal() {
+        double total = 0;
+        for (Frasco frasco : itens.keySet()) {
+            total += frasco.getPreco() * itens.get(frasco);
+        }
+        return total;
+    }
+
     @Override
     public String toString() {
         String texto = "Estoque:\n";
         for (Frasco frasco : itens.keySet()) {
-            texto += "  " + itens.get(frasco) + " x " + frasco + "\n";
+            int quantidade = itens.get(frasco);
+            texto += "  " + quantidade + " x " + frasco;
+            if (quantidade == 0) {
+                texto += " [ESGOTADO]";
+            }
+            texto += "\n";
         }
+        texto += "  Total: " + getTotalFrascos() + " frascos" + String.format(" - R$ %.2f", getValorTotal());
         return texto;
     }
 }
