@@ -2,7 +2,7 @@ package br.edu.unifsa.perfumaria.producao;
 
 import java.time.LocalDate;
 
-public class MateriaPrima {
+public class MateriaPrima implements Perecivel {
 
     private final String nome;
     private final LocalDate fabricacao;
@@ -28,15 +28,12 @@ public class MateriaPrima {
         this(nome, fabricacao, 365);
     }
 
-    // usado pelo Lote na RN08
-    public boolean estaVencida(LocalDate data) {
-        return data.isAfter(validade);
-    }
-
     public String getNome() {
         return nome;
     }
 
+    // estaVencida() vem da interface Perecivel e é usado pelo Lote na RN08
+    @Override
     public LocalDate getValidade() {
         return validade;
     }
